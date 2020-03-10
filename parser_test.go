@@ -1,6 +1,7 @@
 package calculator
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -61,4 +62,20 @@ func TestNextAdv(t *testing.T) {
 			assert.Equal(t, d, n)
 		}
 	}
+}
+
+func TestNextError(t *testing.T) {
+	p := newParser("1&")
+	n, e, err := p.next()
+	assert.Equal(t, err, nil)
+	assert.Equal(t, n, lit(1))
+	assert.Equal(t, e, eol(false))
+	n, e, err = p.next()
+	assert.Equal(t, err, fmt.Errorf("invalid character & at column1"))
+	assert.Equal(t, n, nil)
+	assert.Equal(t, e, eol(false))
+	n, e, err = p.next()
+	assert.Equal(t, err, nil)
+	assert.Equal(t, n, nil)
+	assert.Equal(t, e, eol(true))
 }
