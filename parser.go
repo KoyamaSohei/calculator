@@ -10,7 +10,7 @@ type parser struct {
 	pos int
 }
 
-type node interface{}
+type expr interface{}
 
 type lit int
 
@@ -42,23 +42,23 @@ func isOp(r rune) bool {
 	return r == '+'
 }
 
-type eof bool
+type eol bool
 
-func (p *parser) next() (node, eof, error) {
+func (p *parser) next() (expr, eol, error) {
 	if p.isEOF() {
-		return nil, eof(true), nil
+		return nil, eol(true), nil
 	}
 	var r rune
 	for r = p.rs[p.pos]; isBlank(r); r = p.rs[p.pos] {
 		if p.hasNext() {
 			p.pos++
 		} else {
-			return nil, eof(true), nil
+			return nil, eol(true), nil
 		}
 	}
 	if isOp(r) {
 		p.pos++
-		return op(r), eof(false), nil
+		return op(r), eol(false), nil
 	}
 	s := ""
 	for r = p.rs[p.pos]; !isBlank(r) && !isOp(r); r = p.rs[p.pos] {
@@ -71,7 +71,7 @@ func (p *parser) next() (node, eof, error) {
 	}
 	k, err := strconv.Atoi(s)
 	if err != nil {
-		return nil, eof(false), err
+		return nil, eol(false), err
 	}
-	return lit(k), eof(false), nil
+	return lit(k), eol(false), nil
 }
