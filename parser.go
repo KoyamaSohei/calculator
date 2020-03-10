@@ -10,7 +10,7 @@ type parser struct {
 	pos int
 }
 
-type node interface{}
+type expr interface{}
 
 type lit int
 
@@ -44,7 +44,7 @@ func isOp(r rune) bool {
 
 type eol bool
 
-func (p *parser) next() (node, eol, error) {
+func (p *parser) next() (expr, eol, error) {
 	if p.isEOF() {
 		return nil, eol(true), nil
 	}

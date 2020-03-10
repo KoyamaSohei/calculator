@@ -13,7 +13,7 @@ func TestIsOp(t *testing.T) {
 
 type testpair struct {
 	s string
-	i node
+	i expr
 }
 
 func TestNext(t *testing.T) {
@@ -40,15 +40,15 @@ func TestNext(t *testing.T) {
 
 type testpairAdv struct {
 	s string
-	i []node
+	i []expr
 }
 
 func TestNextAdv(t *testing.T) {
 	cases := []testpairAdv{
-		testpairAdv{"1+1", []node{lit(1), op('+'), lit(1)}},
-		testpairAdv{"1 + 1", []node{lit(1), op('+'), lit(1)}},
-		testpairAdv{" 1+    1", []node{lit(1), op('+'), lit(1)}},
-		testpairAdv{" 1     +1     ", []node{lit(1), op('+'), lit(1)}}}
+		testpairAdv{"1+1", []expr{lit(1), op('+'), lit(1)}},
+		testpairAdv{"1 + 1", []expr{lit(1), op('+'), lit(1)}},
+		testpairAdv{" 1+    1", []expr{lit(1), op('+'), lit(1)}},
+		testpairAdv{" 1     +1     ", []expr{lit(1), op('+'), lit(1)}}}
 	for _, c := range cases {
 		p := newParser(c.s)
 		for _, d := range c.i {
