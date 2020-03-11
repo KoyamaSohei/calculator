@@ -1,5 +1,7 @@
 package calculator
 
+import "fmt"
+
 var precedence = map[op]int{
 	op('+'): 4,
 	op('-'): 4,
@@ -17,11 +19,26 @@ func shuntingyard(ex []expr) ([]expr, error) {
 		switch c := e.(type) {
 		case lit:
 			out = append(out, c)
+		case bra:
+			if c == bra('(') {
+				s.push(c)
+				break
+			}
+			for r, err := s.pop(); r != bra('('); r, err = s.pop() {
+				if err != nil {
+					return nil, err
+				}
+				out = append(out, r)
+			}
 		case op:
 			for !s.empty() {
 				r, err := s.top()
 				if err != nil {
 					return nil, err
+				}
+				_, ok := r.(bra)
+				if ok {
+					break
 				}
 				if !isHighPrecedence(c, r.(op)) {
 					r, err = s.pop()
@@ -38,6 +55,10 @@ func shuntingyard(ex []expr) ([]expr, error) {
 	}
 	for !s.empty() {
 		r, err := s.pop()
+		_, ok := r.(bra)
+		if ok {
+			return nil, fmt.Errorf("braces is not closed")
+		}
 		if err != nil {
 			return nil, err
 		}

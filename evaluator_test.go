@@ -1,8 +1,9 @@
 package calculator
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestShuntingyard(t *testing.T) {
@@ -21,6 +22,33 @@ func TestShuntingyard(t *testing.T) {
 	o, err = shuntingyard([]expr{lit(1), op('+')})
 	assert.Nil(t, err)
 	assert.Equal(t, []expr{lit(1), op('+')}, o)
+}
+
+func TestShuntingyardAdv(t *testing.T) {
+	o, err := shuntingyard([]expr{lit(9), op('*'), bra('('), lit(1), op('+'), lit(2), op('*'), lit(10), bra(')')})
+	assert.Nil(t, err)
+	assert.Equal(t, []expr{lit(9), lit(1), lit(2), lit(10), op('*'), op('+'), op('*')}, o)
+	o, err = shuntingyard([]expr{lit(3), op('+'), bra('('), lit(1), op('+'), lit(4), op('*'), lit(4), bra(')'), op('*'), lit(5)})
+	assert.Nil(t, err)
+	assert.Equal(t, []expr{lit(3), lit(1), lit(4), lit(4), op('*'), op('+'), lit(5), op('*'), op('+')}, o)
+	o, err = shuntingyard([]expr{bra(')')})
+	assert.NotNil(t, err)
+	assert.Nil(t, o)
+	o, err = shuntingyard([]expr{bra('(')})
+	assert.NotNil(t, err)
+	assert.Nil(t, o)
+	o, err = shuntingyard([]expr{lit(1), bra('('), op('+'), lit(2)})
+	assert.NotNil(t, err)
+	assert.Nil(t, o)
+	o, err = shuntingyard([]expr{op('*'), bra('('), op('+'), lit(2)})
+	assert.NotNil(t, err)
+	assert.Nil(t, o)
+	o, err = shuntingyard([]expr{lit(1), bra(')'), op('*'), lit(2)})
+	assert.NotNil(t, err)
+	assert.Nil(t, o)
+	o, err = shuntingyard([]expr{lit(1), bra(')'), lit(2), lit(2)})
+	assert.NotNil(t, err)
+	assert.Nil(t, o)
 }
 
 func TestEvalPostfix(t *testing.T) {
