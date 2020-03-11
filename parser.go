@@ -27,7 +27,7 @@ func newParser(s string) parser {
 	return parser{rs, 0}
 }
 
-func (p parser) isEOF() bool {
+func (p parser) isEOL() bool {
 	return p.pos >= len(p.rs)
 }
 
@@ -77,7 +77,7 @@ func isExpr(r rune) bool {
 type eol bool
 
 func (p *parser) next() (expr, eol, error) {
-	if p.isEOF() {
+	if p.isEOL() {
 		return nil, eol(true), nil
 	}
 	r := p.rs[p.pos]
@@ -100,9 +100,8 @@ func (p *parser) next() (expr, eol, error) {
 	s := ""
 	for r = p.rs[p.pos]; isLit(r); r = p.rs[p.pos] {
 		s += string(r)
-		if p.hasNext() {
-			p.pos++
-		} else {
+		p.pos++
+		if p.isEOL() {
 			break
 		}
 	}

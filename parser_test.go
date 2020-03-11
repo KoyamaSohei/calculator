@@ -71,7 +71,7 @@ func TestNextError(t *testing.T) {
 	assert.Equal(t, n, lit(1))
 	assert.Equal(t, e, eol(false))
 	n, e, err = p.next()
-	assert.Equal(t, err, fmt.Errorf("invalid character & at column1"))
+	assert.Equal(t, err, fmt.Errorf("invalid character & at column 1"))
 	assert.Equal(t, n, nil)
 	assert.Equal(t, e, eol(false))
 	n, e, err = p.next()
