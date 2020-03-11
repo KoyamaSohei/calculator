@@ -35,6 +35,16 @@ func (s *stack) pop() (expr, error) {
 	return res, nil
 }
 
+func (s *stack) top() (expr, error) {
+	l := len(s.s)
+	if l == 0 {
+		return 0, errors.New("Empty Stack")
+	}
+
+	res := s.s[l-1]
+	return res, nil
+}
+
 func (s *stack) empty() bool {
 	l := len(s.s)
 	if l == 0 {
