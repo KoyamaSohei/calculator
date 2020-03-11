@@ -7,7 +7,7 @@ parse and evaluate formula.
 
 ## Usage
 
-For detail, please check [exaples/app.go](https://github.com/KoyamaSohei/calculator/blob/master/examples/app.go)
+For detail, please check [examples/app.go](https://github.com/KoyamaSohei/calculator/blob/master/examples/app.go)
 
 ```bash
 $ go run examples/app.go
