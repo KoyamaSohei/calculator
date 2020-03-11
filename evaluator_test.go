@@ -5,6 +5,24 @@ import (
 	"testing"
 )
 
+func TestShuntingyard(t *testing.T) {
+	o, err := shuntingyard([]expr{lit(1), op('+'), lit(1)})
+	assert.Nil(t, err)
+	assert.Equal(t, []expr{lit(1), lit(1), op('+')}, o)
+	o, err = shuntingyard([]expr{lit(10), op('+'), lit(2), op('*'), lit(3)})
+	assert.Nil(t, err)
+	assert.Equal(t, []expr{lit(10), lit(2), lit(3), op('*'), op('+')}, o)
+	o, err = shuntingyard([]expr{lit(4), op('/'), lit(2), op('-'), lit(10)})
+	assert.Nil(t, err)
+	assert.Equal(t, []expr{lit(4), lit(2), op('/'), lit(10), op('-')}, o)
+	o, err = shuntingyard([]expr{lit(1), op('+'), lit(2), op('-'), lit(3), op('+'), lit(4)})
+	assert.Nil(t, err)
+	assert.Equal(t, []expr{lit(1), lit(2), op('+'), lit(3), op('-'), lit(4), op('+')}, o)
+	o, err = shuntingyard([]expr{lit(1), op('+')})
+	assert.Nil(t, err)
+	assert.Equal(t, []expr{lit(1), op('+')}, o)
+}
+
 func TestEvalPostfix(t *testing.T) {
 	k, err := evalPostfix([]expr{lit(1), lit(1), op('+')})
 	assert.Nil(t, err)
