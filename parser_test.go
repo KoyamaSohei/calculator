@@ -8,8 +8,8 @@ import (
 )
 
 func TestIsOp(t *testing.T) {
-	assert.Equal(t, true, isOp('+'))
-	assert.Equal(t, false, isOp('0'))
+	assert.True(t, isOp('+'))
+	assert.False(t, isOp('0'))
 }
 
 type testpair struct {
@@ -67,16 +67,16 @@ func TestNextAdv(t *testing.T) {
 func TestNextError(t *testing.T) {
 	p := newParser("1&")
 	n, e, err := p.next()
-	assert.Equal(t, err, nil)
+	assert.Nil(t, err)
 	assert.Equal(t, n, lit(1))
 	assert.Equal(t, e, eol(false))
 	n, e, err = p.next()
 	assert.Equal(t, err, fmt.Errorf("invalid character & at column 1"))
-	assert.Equal(t, n, nil)
+	assert.Nil(t, n)
 	assert.Equal(t, e, eol(false))
 	n, e, err = p.next()
-	assert.Equal(t, err, nil)
-	assert.Equal(t, n, nil)
+	assert.Nil(t, err)
+	assert.Nil(t, n)
 	assert.Equal(t, e, eol(true))
 }
 
@@ -89,7 +89,7 @@ func TestParse(t *testing.T) {
 	for _, c := range cases {
 		t.Log(c.s)
 		i, err := parse(c.s)
-		assert.Equal(t, nil, err)
+		assert.Nil(t, err)
 		assert.Equal(t, len(c.i), len(i))
 		assert.Equal(t, c.i, i)
 	}
