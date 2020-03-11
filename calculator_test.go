@@ -19,7 +19,7 @@ func TestCalculator(t *testing.T) {
 		testIO{"2+3*6", 20},
 		testIO{" 2+100-50 *4 / 5", 62}}
 	for _, io := range ios {
-		o, err := eval(io.i)
+		o, err := Eval(io.i)
 		assert.Nil(t, err)
 		assert.Equal(t, io.o, o)
 	}
