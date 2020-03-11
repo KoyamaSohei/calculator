@@ -36,7 +36,18 @@ func isBlank(r rune) bool {
 }
 
 func isOp(r rune) bool {
-	return r == '+'
+	switch r {
+	case '+':
+		fallthrough
+	case '-':
+		fallthrough
+	case '*':
+		fallthrough
+	case '/':
+		return true
+	default:
+		return false
+	}
 }
 
 func isLit(r rune) bool {

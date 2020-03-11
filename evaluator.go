@@ -20,6 +20,12 @@ func evalPostfix(ex []expr) (int, error) {
 			switch c {
 			case op('+'):
 				s.push(a + b)
+			case op('-'):
+				s.push(a - b)
+			case op('*'):
+				s.push(a * b)
+			case op('/'):
+				s.push(a / b)
 			}
 		}
 	}
