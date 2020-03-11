@@ -1,6 +1,6 @@
 package calculator
 
-// Eval evals string formula
+// Eval evaluates formula
 func Eval(s string) (int, error) {
 	e, err := parse(s)
 	if err != nil {
