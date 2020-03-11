@@ -31,10 +31,6 @@ func (p parser) isEOL() bool {
 	return p.pos >= len(p.rs)
 }
 
-func (p parser) hasNext() bool {
-	return p.pos+1 < len(p.rs)
-}
-
 func isBlank(r rune) bool {
 	return r == ' '
 }
@@ -81,17 +77,16 @@ func (p *parser) next() (expr, eol, error) {
 		return nil, eol(true), nil
 	}
 	r := p.rs[p.pos]
+	for ; isBlank(r); r = p.rs[p.pos] {
+		p.pos++
+		if p.isEOL() {
+			return nil, eol(true), nil
+		}
+	}
 	if !isExpr(r) {
 		ps := p.pos
 		p.pos++
 		return nil, eol(false), fmt.Errorf("invalid character %c at column %d", r, ps)
-	}
-	for ; isBlank(r); r = p.rs[p.pos] {
-		if p.hasNext() {
-			p.pos++
-		} else {
-			return nil, eol(true), nil
-		}
 	}
 	if isOp(r) {
 		p.pos++
