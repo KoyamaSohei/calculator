@@ -85,7 +85,10 @@ func TestParse(t *testing.T) {
 		testpairAdv{"2", []expr{lit(2)}},
 		testpairAdv{"3+45+67+890", []expr{lit(3), op('+'), lit(45), op('+'), lit(67), op('+'), lit(890)}},
 		testpairAdv{" 1+ 22+333 +4444 ", []expr{lit(1), op('+'), lit(22), op('+'), lit(333), op('+'), lit(4444)}},
-		testpairAdv{"++++1+++++", []expr{op('+'), op('+'), op('+'), op('+'), lit(1), op('+'), op('+'), op('+'), op('+'), op('+')}}}
+		testpairAdv{"++++1+++++", []expr{op('+'), op('+'), op('+'), op('+'), lit(1), op('+'), op('+'), op('+'), op('+'), op('+')}},
+		testpairAdv{"1+-*/+3+/-3*3// **/ /",
+			[]expr{lit(1), op('+'), op('-'), op('*'), op('/'), op('+'), lit(3), op('+'), op('/'), op('-'), lit(3), op('*'),
+				lit(3), op('/'), op('/'), op('*'), op('*'), op('/'), op('/')}}}
 	for _, c := range cases {
 		t.Log(c.s)
 		i, err := parse(c.s)
