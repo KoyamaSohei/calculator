@@ -7,23 +7,26 @@ func evalPostfix(ex []expr) (int, error) {
 		case lit:
 			s.push(c)
 		case op:
-			b, err := s.pop()
+			be, err := s.pop()
 			if err != nil {
 				return -1, err
 			}
-			a, err := s.pop()
+			b, _ := be.(lit)
+			ae, err := s.pop()
 			if err != nil {
 				return -1, err
 			}
+			a, _ := ae.(lit)
 			switch c {
 			case op('+'):
 				s.push(a + b)
 			}
 		}
 	}
-	n, err := s.pop()
+	ne, err := s.pop()
 	if err != nil || !s.empty() {
 		return -1, err
 	}
-	return int(n), nil
+	n, _ := ne.(int)
+	return n, nil
 }
