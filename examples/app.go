@@ -10,6 +10,7 @@ import (
 
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Printf(">")
 	for scanner.Scan() {
 		s := scanner.Text()
 		v, err := calc.Eval(s)
@@ -17,7 +18,7 @@ func main() {
 			fmt.Printf("Error: %s\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("Answer: %d\n", v)
+		fmt.Printf("Answer: %d\n>", v)
 	}
 	if scanner.Err() != nil {
 		os.Exit(1)
