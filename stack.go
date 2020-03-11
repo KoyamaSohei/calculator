@@ -7,21 +7,21 @@ import (
 
 type stack struct {
 	lock sync.Mutex
-	s    []lit
+	s    []expr
 }
 
 func newStack() *stack {
-	return &stack{sync.Mutex{}, make([]lit, 0)}
+	return &stack{sync.Mutex{}, make([]expr, 0)}
 }
 
-func (s *stack) push(v lit) {
+func (s *stack) push(v expr) {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 
 	s.s = append(s.s, v)
 }
 
-func (s *stack) pop() (lit, error) {
+func (s *stack) pop() (expr, error) {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 
