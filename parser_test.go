@@ -94,3 +94,17 @@ func TestParse(t *testing.T) {
 		assert.Equal(t, c.i, i)
 	}
 }
+
+func TestParseError(t *testing.T) {
+	cases := []string{
+		"0@",
+		"@000",
+		"'12'21'",
+		"$$$",
+		"1  🚀  2 ",
+		"$ $$1  $23 $$4 $$5$ "}
+	for _, c := range cases {
+		_, err := parse(c)
+		assert.NotNil(t, err)
+	}
+}
