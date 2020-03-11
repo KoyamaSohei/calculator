@@ -27,6 +27,6 @@ func evalPostfix(ex []expr) (int, error) {
 	if err != nil || !s.empty() {
 		return -1, err
 	}
-	n, _ := ne.(int)
-	return n, nil
+	nl, _ := ne.(lit)
+	return int(nl), nil
 }
