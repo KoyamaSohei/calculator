@@ -17,6 +17,8 @@ type lit int
 
 type op rune
 
+type bra rune
+
 func newParser(s string) parser {
 	rs := make([]rune, 0)
 	for len(s) > 0 {
@@ -77,8 +79,19 @@ func isLit(r rune) bool {
 	}
 }
 
+func isBra(r rune) bool {
+	switch r {
+	case '(':
+		fallthrough
+	case ')':
+		return true
+	default:
+		return false
+	}
+}
+
 func isExpr(r rune) bool {
-	return isBlank(r) || isOp(r) || isLit(r)
+	return isBlank(r) || isOp(r) || isBra(r) || isLit(r)
 }
 
 type eol bool
@@ -102,6 +115,10 @@ func (p *parser) next() (expr, eol, error) {
 	if isOp(r) {
 		p.pos++
 		return op(r), eol(false), nil
+	}
+	if isBra(r) {
+		p.pos++
+		return bra(r), eol(false), nil
 	}
 	s := ""
 	for r = p.rs[p.pos]; isLit(r); r = p.rs[p.pos] {

@@ -49,7 +49,9 @@ func TestNextAdv(t *testing.T) {
 		testpairAdv{"1+1", []expr{lit(1), op('+'), lit(1)}},
 		testpairAdv{"1 + 1", []expr{lit(1), op('+'), lit(1)}},
 		testpairAdv{" 1+    1", []expr{lit(1), op('+'), lit(1)}},
-		testpairAdv{" 1     +1     ", []expr{lit(1), op('+'), lit(1)}}}
+		testpairAdv{" 1     +1     ", []expr{lit(1), op('+'), lit(1)}},
+		testpairAdv{"1() +3((*( )+)/) ",
+			[]expr{lit(1), bra('('), bra(')'), op('+'), lit(3), bra('('), bra('('), op('*'), bra('('), bra(')'), op('+'), bra(')'), op('/'), bra(')')}}}
 	for _, c := range cases {
 		p := newParser(c.s)
 		for _, d := range c.i {
