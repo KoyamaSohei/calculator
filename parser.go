@@ -111,3 +111,15 @@ func (p *parser) next() (expr, eol, error) {
 	}
 	return lit(k), eol(false), nil
 }
+
+func parse(s string) ([]expr, error) {
+	p := newParser(s)
+	exprs := make([]expr, 0)
+	for r, end, err := p.next(); end == eol(false); r, end, err = p.next() {
+		if err != nil {
+			return nil, err
+		}
+		exprs = append(exprs, r)
+	}
+	return exprs, nil
+}
