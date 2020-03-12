@@ -9,18 +9,5 @@ parse and evaluate formula.
 
 For detail, please check [examples/app.go](https://github.com/KoyamaSohei/calculator/blob/master/examples/app.go)
 
-```bash
-$ go run examples/app.go
->1+1
-Answer: 2
->1+2*3
-Answer: 7
->1*(2+3)
-Answer: 5
->1-(2/3)
-Answer: 1
->(2+2*3)/4
-Answer: 2
-```
-
+[![asciicast](https://asciinema.org/a/uWq4lwnXf2M3Y2qOZhke4mRM8.svg)](https://asciinema.org/a/uWq4lwnXf2M3Y2qOZhke4mRM8)
 
