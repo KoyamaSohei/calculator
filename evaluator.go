@@ -58,7 +58,7 @@ func shuntingyard(ex []expr) ([]expr, error) {
 		r, err := s.pop()
 		_, ok := r.(bra)
 		if ok {
-			return nil, fmt.Errorf("braces is not closed")
+			return nil, fmt.Errorf("mismatched parentheses")
 		}
 		if err != nil {
 			return nil, err
@@ -77,12 +77,12 @@ func evalPostfix(ex []expr) (int, error) {
 		case op:
 			be, err := s.pop()
 			if err != nil {
-				return -1, err
+				return -1, fmt.Errorf("invalid operation at %c", c)
 			}
 			b, _ := be.(lit)
 			ae, err := s.pop()
 			if err != nil {
-				return -1, err
+				return -1, fmt.Errorf("invalid operation at %c", c)
 			}
 			a, _ := ae.(lit)
 			switch c {
@@ -99,7 +99,7 @@ func evalPostfix(ex []expr) (int, error) {
 	}
 	ne, err := s.pop()
 	if err != nil || !s.empty() {
-		return -1, err
+		return -1, fmt.Errorf("invalid operation")
 	}
 	nl, _ := ne.(lit)
 	return int(nl), nil
