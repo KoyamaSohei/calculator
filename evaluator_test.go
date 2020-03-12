@@ -75,6 +75,8 @@ func TestEvalPostfix(t *testing.T) {
 	k, err = evalPostfix([]expr{lit(9), lit(4), op('/')})
 	assert.Nil(t, err)
 	assert.Equal(t, 2, k)
+	k, err = evalPostfix([]expr{lit(3), lit(0), op('/')})
+	assert.Equal(t, fmt.Errorf("division by zero"), err)
 }
 
 func TestEvalPostfixAdv(t *testing.T) {
