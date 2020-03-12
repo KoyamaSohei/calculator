@@ -1,6 +1,7 @@
 package calculator
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -32,22 +33,22 @@ func TestShuntingyardAdv(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, []expr{lit(3), lit(1), lit(4), lit(4), op('*'), op('+'), lit(5), op('*'), op('+')}, o)
 	o, err = shuntingyard([]expr{bra(')')})
-	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Errorf("mismatched parentheses"), err)
 	assert.Nil(t, o)
 	o, err = shuntingyard([]expr{bra('(')})
-	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Errorf("mismatched parentheses"), err)
 	assert.Nil(t, o)
 	o, err = shuntingyard([]expr{lit(1), bra('('), op('+'), lit(2)})
-	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Errorf("mismatched parentheses"), err)
 	assert.Nil(t, o)
 	o, err = shuntingyard([]expr{op('*'), bra('('), op('+'), lit(2)})
-	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Errorf("mismatched parentheses"), err)
 	assert.Nil(t, o)
 	o, err = shuntingyard([]expr{lit(1), bra(')'), op('*'), lit(2)})
-	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Errorf("mismatched parentheses"), err)
 	assert.Nil(t, o)
 	o, err = shuntingyard([]expr{lit(1), bra(')'), lit(2), lit(2)})
-	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Errorf("mismatched parentheses"), err)
 	assert.Nil(t, o)
 }
 
@@ -59,9 +60,9 @@ func TestEvalPostfix(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, 5, k)
 	_, err = evalPostfix([]expr{lit(1), lit(3), lit(1), op('+'), op('+'), op('+')})
-	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Errorf("invalid operation at +"), err)
 	_, err = evalPostfix([]expr{op('+'), op('+'), lit(0), op('+')})
-	assert.NotNil(t, err)
+	assert.Equal(t, fmt.Errorf("invalid operation at +"), err)
 	k, err = evalPostfix([]expr{lit(1), lit(3), op('-')})
 	assert.Nil(t, err)
 	assert.Equal(t, -2, k)
