@@ -20,15 +20,16 @@ func shuntingyard(ex []expr) ([]expr, error) {
 		case lit:
 			out = append(out, c)
 		case bra:
-			if c == bra('(') {
+			switch c {
+			case bra('('):
 				s.push(c)
-				break
-			}
-			for r, err := s.pop(); r != bra('('); r, err = s.pop() {
-				if err != nil {
-					return nil, err
+			case bra(')'):
+				for r, err := s.pop(); r != bra('('); r, err = s.pop() {
+					if err != nil {
+						return nil, fmt.Errorf("mismatched parentheses")
+					}
+					out = append(out, r)
 				}
-				out = append(out, r)
 			}
 		case op:
 			for !s.empty() {
