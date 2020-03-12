@@ -93,6 +93,9 @@ func evalPostfix(ex []expr) (int, error) {
 			case op('*'):
 				s.push(a * b)
 			case op('/'):
+				if b == 0 {
+					return -1, fmt.Errorf("division by zero")
+				}
 				s.push(a / b)
 			}
 		}
